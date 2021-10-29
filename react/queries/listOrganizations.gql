@@ -6,6 +6,7 @@ query Organizations(
   $sortedBy: String
 ) {
   getOrganizations(
+    status: ["active"]
     search: $search
     page: $page
     pageSize: $pageSize
