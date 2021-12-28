@@ -5,14 +5,15 @@ import React, { useState } from 'react'
 import type { WrappedComponentProps } from 'react-intl'
 import { injectIntl, defineMessages } from 'react-intl'
 import { useQuery, useMutation, useLazyQuery } from 'react-apollo'
-import { Button, Dropdown, Toggle, Alert } from 'vtex.styleguide'
+import { Button, Dropdown, Toggle, Alert, ButtonWithIcon, IconClear } from 'vtex.styleguide'
 
 import GET_USER from '../queries/getUser.gql'
 import GET_ROLES from '../queries/ListRoles.gql'
 import GET_ORG from '../queries/listOrganizations.gql'
 import GET_COST from '../queries/costCentersByOrg.gql'
 import SAVE_USER from '../mutations/saveUser.gql'
-import { stat } from 'fs'
+
+const remove = <IconClear />
 
 const messages = defineMessages({
   role: {
@@ -159,6 +160,14 @@ const UserEdit: FC<any & WrappedComponentProps> = (props: any) => {
     })
   }
 
+  const handleClear = () => {
+    setState({
+      ...state,
+      orgId: null,
+      costId: null,
+    })
+  }
+
   const optionsOrg = parseOptions(orgData?.getOrganizations) ?? []
   const optionsCost =
     parseOptions(dataCostCenter?.getCostCentersByOrganizationId) ?? []
@@ -175,7 +184,7 @@ const UserEdit: FC<any & WrappedComponentProps> = (props: any) => {
     <div className="w-100 pt6">
       {showName && <div className="mb5">{state.name}</div>}
       {showEmail && <div className="mb5">{state.email}</div>}
-      <div className="mb5">
+      <div className="mb5 w-80">
         <Dropdown
           label={intl.formatMessage(messages.role)}
           disabled={loadingRoles || loading}
@@ -195,25 +204,34 @@ const UserEdit: FC<any & WrappedComponentProps> = (props: any) => {
       </div>
 
       {dataRoles && (
-        <div className="mb5">
-          <Dropdown
-            label={intl.formatMessage(messages.organization)}
-            options={optionsOrg}
-            value={state.orgId}
-            onChange={(_: any, orgId: any) => {
-              setState({ ...state, orgId })
-              getCostCenter({
-                variables: {
-                  id: orgId,
-                },
-              })
-            }}
-          />
+        <div className="mb5 w-100">
+          <div className="flex">
+            <div className="mr2 w-80">
+              <Dropdown
+                label={intl.formatMessage(messages.organization)}
+                options={optionsOrg}
+                value={state.orgId}
+                onChange={(_: any, orgId: any) => {
+                  setState({ ...state, orgId, costId: null })
+                  getCostCenter({
+                    variables: {
+                      id: orgId,
+                    },
+                  })
+                }}
+              />
+            </div>
+            {state.orgId && <div className="mr2 mt2 w-20 mt6">
+              <ButtonWithIcon icon={remove} variation="danger-tertiary" onClick={() => {
+                handleClear()
+              }}/>
+            </div>}
+          </div>
         </div>
       )}
 
       {state.orgId && (
-        <div className="mb5">
+        <div className="mb5 w-80">
           <Dropdown
             label={intl.formatMessage(messages.costCenter)}
             options={optionsCost}
