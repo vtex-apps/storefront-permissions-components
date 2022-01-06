@@ -1,7 +1,7 @@
 {
   "name": "storefront-permissions-components",
   "vendor": "vtex",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "title": "Storefront Permissions Components",
   "description": "Host sharable components",
   "mustUpdateAt": "2022-08-28",
