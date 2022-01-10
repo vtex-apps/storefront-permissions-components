@@ -1,11 +1,16 @@
-/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { FC } from 'react'
 import React, { useState } from 'react'
 import type { WrappedComponentProps } from 'react-intl'
 import { injectIntl, defineMessages } from 'react-intl'
 import { useQuery, useMutation, useLazyQuery } from 'react-apollo'
-import { Button, Dropdown, Toggle, Alert, ButtonWithIcon, IconClear } from 'vtex.styleguide'
+import {
+  Button,
+  Dropdown,
+  Alert,
+  ButtonWithIcon,
+  IconClear,
+} from 'vtex.styleguide'
 
 import GET_USER from '../queries/getUser.gql'
 import GET_ROLES from '../queries/ListRoles.gql'
@@ -104,7 +109,7 @@ const UserEdit: FC<any & WrappedComponentProps> = (props: any) => {
     },
   })
 
-  const { loading: loadingOrg, data: orgData } = useQuery(GET_ORG, {
+  const { data: orgData } = useQuery(GET_ORG, {
     variables: {
       pageSize: 999,
     },
@@ -133,10 +138,8 @@ const UserEdit: FC<any & WrappedComponentProps> = (props: any) => {
 
   const { loading: loadingRoles, data: dataRoles } = useQuery(GET_ROLES)
 
-  const [getCostCenter, { data: dataCostCenter, error, called }] =
+  const [getCostCenter, { data: dataCostCenter, called }] =
     useLazyQuery(GET_COST)
-
-  console.log('Error getting cost center =>', error)
 
   const handleSaveUser = () => {
     const variables: any = {
@@ -221,11 +224,17 @@ const UserEdit: FC<any & WrappedComponentProps> = (props: any) => {
                 }}
               />
             </div>
-            {state.orgId && <div className="mr2 mt2 w-20 mt6">
-              <ButtonWithIcon icon={remove} variation="danger-tertiary" onClick={() => {
-                handleClear()
-              }}/>
-            </div>}
+            {state.orgId && (
+              <div className="mr2 mt2 w-20 mt6">
+                <ButtonWithIcon
+                  icon={remove}
+                  variation="danger-tertiary"
+                  onClick={() => {
+                    handleClear()
+                  }}
+                />
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -242,18 +251,6 @@ const UserEdit: FC<any & WrappedComponentProps> = (props: any) => {
           />
         </div>
       )}
-
-      <div className="mb5">
-        <Toggle
-          label={intl.formatMessage(messages.canImpersonate)}
-          size="large"
-          disabled={loadingOrg}
-          checked={state.canImpersonate}
-          onChange={() => {
-            setState({ ...state, canImpersonate: !state.canImpersonate })
-          }}
-        />
-      </div>
 
       <div className="mv4 flex justify-between">
         {showCancel && onCancel && (
