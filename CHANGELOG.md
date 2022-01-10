@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Removed
 - Can Impersonate
+- Console logs
 
 ## [0.0.6] - 2022-01-06
 
