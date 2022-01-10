@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { FC } from 'react'
 import React, { useState } from 'react'
@@ -139,10 +138,8 @@ const UserEdit: FC<any & WrappedComponentProps> = (props: any) => {
 
   const { loading: loadingRoles, data: dataRoles } = useQuery(GET_ROLES)
 
-  const [getCostCenter, { data: dataCostCenter, error, called }] =
+  const [getCostCenter, { data: dataCostCenter, called }] =
     useLazyQuery(GET_COST)
-
-  console.log('Error getting cost center =>', error)
 
   const handleSaveUser = () => {
     const variables: any = {
@@ -254,18 +251,6 @@ const UserEdit: FC<any & WrappedComponentProps> = (props: any) => {
           />
         </div>
       )}
-
-      {/* <div className="mb5">
-        <Toggle
-          label={intl.formatMessage(messages.canImpersonate)}
-          size="large"
-          disabled={loadingOrg}
-          checked={state.canImpersonate}
-          onChange={() => {
-            setState({ ...state, canImpersonate: !state.canImpersonate })
-          }}
-        />
-      </div> */}
 
       <div className="mv4 flex justify-between">
         {showCancel && onCancel && (
