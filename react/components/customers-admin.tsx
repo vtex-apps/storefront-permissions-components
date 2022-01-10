@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import type { WrappedComponentProps } from 'react-intl'
 import { injectIntl, defineMessages } from 'react-intl'
 import { useQuery, useMutation, useLazyQuery } from 'react-apollo'
-import { Button, Dropdown, Toggle, Alert, ButtonWithIcon, IconClear } from 'vtex.styleguide'
+import { Button, Dropdown, Alert, ButtonWithIcon, IconClear } from 'vtex.styleguide'
 
 import GET_USER from '../queries/getUser.gql'
 import GET_ROLES from '../queries/ListRoles.gql'
@@ -104,7 +104,7 @@ const UserEdit: FC<any & WrappedComponentProps> = (props: any) => {
     },
   })
 
-  const { loading: loadingOrg, data: orgData } = useQuery(GET_ORG, {
+  const { data: orgData } = useQuery(GET_ORG, {
     variables: {
       pageSize: 999,
     },
