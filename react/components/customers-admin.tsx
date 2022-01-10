@@ -243,7 +243,7 @@ const UserEdit: FC<any & WrappedComponentProps> = (props: any) => {
         </div>
       )}
 
-      <div className="mb5">
+      {/* <div className="mb5">
         <Toggle
           label={intl.formatMessage(messages.canImpersonate)}
           size="large"
@@ -253,7 +253,7 @@ const UserEdit: FC<any & WrappedComponentProps> = (props: any) => {
             setState({ ...state, canImpersonate: !state.canImpersonate })
           }}
         />
-      </div>
+      </div> */}
 
       <div className="mv4 flex justify-between">
         {showCancel && onCancel && (
