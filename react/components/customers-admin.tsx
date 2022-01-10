@@ -5,7 +5,13 @@ import React, { useState } from 'react'
 import type { WrappedComponentProps } from 'react-intl'
 import { injectIntl, defineMessages } from 'react-intl'
 import { useQuery, useMutation, useLazyQuery } from 'react-apollo'
-import { Button, Dropdown, Alert, ButtonWithIcon, IconClear } from 'vtex.styleguide'
+import {
+  Button,
+  Dropdown,
+  Alert,
+  ButtonWithIcon,
+  IconClear,
+} from 'vtex.styleguide'
 
 import GET_USER from '../queries/getUser.gql'
 import GET_ROLES from '../queries/ListRoles.gql'
@@ -221,11 +227,17 @@ const UserEdit: FC<any & WrappedComponentProps> = (props: any) => {
                 }}
               />
             </div>
-            {state.orgId && <div className="mr2 mt2 w-20 mt6">
-              <ButtonWithIcon icon={remove} variation="danger-tertiary" onClick={() => {
-                handleClear()
-              }}/>
-            </div>}
+            {state.orgId && (
+              <div className="mr2 mt2 w-20 mt6">
+                <ButtonWithIcon
+                  icon={remove}
+                  variation="danger-tertiary"
+                  onClick={() => {
+                    handleClear()
+                  }}
+                />
+              </div>
+            )}
           </div>
         </div>
       )}
