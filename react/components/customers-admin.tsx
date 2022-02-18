@@ -61,6 +61,11 @@ const messages = defineMessages({
     id: 'admin/storefront-permissions.tab.users.success',
     defaultMessage: 'B2B info saved',
   },
+  alertPick: {
+    id: 'admin/storefront-permissions.alert-pick',
+    defaultMessage:
+      'You need to pick a cost center before you can save changes',
+  },
   error: {
     id: 'admin/storefront-permissions.tab.users.error',
     defaultMessage: 'Error saving B2B info',
@@ -252,6 +257,12 @@ const UserEdit: FC<any & WrappedComponentProps> = (props: any) => {
         </div>
       )}
 
+      {state.orgId && !state.costId ? (
+        <div className="mv4">
+          <Alert type="error">{intl.formatMessage(messages.alertPick)}</Alert>
+        </div>
+      ) : null}
+
       <div className="mv4 flex justify-between">
         {showCancel && onCancel && (
           <Button
@@ -269,6 +280,7 @@ const UserEdit: FC<any & WrappedComponentProps> = (props: any) => {
           variation="primary"
           disabled={
             loading ||
+            (state.orgId && !state.costId) ||
             saveUserLoading ||
             !state.name ||
             !state.email ||

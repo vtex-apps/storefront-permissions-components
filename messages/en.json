@@ -18,5 +18,6 @@
   "admin/storefront-permissions.tab.users.error": "Error saving B2B info",
   "admin/storefront-permissions.tab.users.name.label": "Name",
   "admin/storefront-permissions.tab.users.success": "B2B info saved",
-  "admin/storefront-permissions.title": "Storefront Permissions"
+  "admin/storefront-permissions.title": "Storefront Permissions",
+  "admin/storefront-permissions.alert-pick": "You need to pick a cost center before you can save changes"
 }

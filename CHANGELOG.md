@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Added alert messaging to block the user from saving incomplete configurations
+- Added validation to make sure roles get assigned the correct settings
+- Disabled save button when the invalid settings is detected
+
 ## [0.0.7] - 2022-01-10
 
 ### Removed
