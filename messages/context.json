@@ -18,5 +18,6 @@
   "admin/storefront-permissions.tab.users.error": "admin/storefront-permissions.tab.users.error",
   "admin/storefront-permissions.tab.users.name.label": "admin/storefront-permissions.tab.users.name.label",
   "admin/storefront-permissions.tab.users.success": "admin/storefront-permissions.tab.users.success",
-  "admin/storefront-permissions.title": "admin/storefront-permissions.title"
+  "admin/storefront-permissions.title": "admin/storefront-permissions.title",
+  "admin/storefront-permissions.alert-pick": "admin/storefront-permissions.alert-pick"
 }
