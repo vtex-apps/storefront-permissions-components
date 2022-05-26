@@ -1,6 +1,7 @@
 {
+  "admin/storefront-permissions.b2bInfo.title": "B2B Information",
   "admin/storefront-permissions.button.cancel": "Cancel",
-  "admin/storefront-permissions.button.delete": "Delete",
+  "admin/storefront-permissions.button.delete": "Remove B2B Info",
   "admin/storefront-permissions.button.save": "Save",
   "admin/storefront-permissions.description": "Roles and User management",
   "admin/storefront-permissions.navigation.keywords": "b2b, Roles, Profiles",
