@@ -12,7 +12,7 @@ import GET_COST from '../queries/costCentersByOrg.gql'
 import SAVE_USER from '../mutations/saveUser.gql'
 import DELETE_USER from '../mutations/deleteUser.gql'
 
-const messages = defineMessages({
+export const messages = defineMessages({
   b2bInfo: {
     id: 'admin/storefront-permissions.b2bInfo.title',
     defaultMessage: 'B2B Information',
@@ -69,6 +69,10 @@ const messages = defineMessages({
   error: {
     id: 'admin/storefront-permissions.tab.users.error',
     defaultMessage: 'Error saving B2B info',
+  },
+  searchOrganizations: {
+    id: 'admin/storefront-permissions.searchOrganizations',
+    defaultMessage: 'Search organizations...',
   },
 })
 

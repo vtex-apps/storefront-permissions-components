@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useQuery } from 'react-apollo'
 import { AutocompleteInput } from 'vtex.styleguide'
+import { useIntl } from 'react-intl'
 
+import { messages } from './customers-admin'
 import GET_ORGANIZATIONS from '../queries/listOrganizations.gql'
 import GET_ORGANIZATION_BY_ID from '../queries/getOrganization.graphql'
 
@@ -20,6 +22,7 @@ interface Props {
 }
 
 const OrganizationsAutocomplete = ({ onChange, organizationId }: Props) => {
+  const { formatMessage } = useIntl()
   const [term, setTerm] = useState('')
   const [hasChanged, setHasChanged] = useState(false)
   const [values, setValues] = useState([] as any)
@@ -91,7 +94,7 @@ const OrganizationsAutocomplete = ({ onChange, organizationId }: Props) => {
       setTerm(_term)
     },
     onClear,
-    placeholder: 'Search organization...',
+    placeholder: formatMessage(messages.searchOrganizations),
     value: term,
   }
 
