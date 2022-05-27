@@ -1,4 +1,5 @@
 {
+  "admin/storefront-permissions.b2bInfo.title": "admin/storefront-permissions.b2bInfo.title",
   "admin/storefront-permissions.button.cancel": "admin/storefront-permissions.button.cancel",
   "admin/storefront-permissions.button.delete": "admin/storefront-permissions.button.delete",
   "admin/storefront-permissions.button.save": "admin/storefront-permissions.button.save",
@@ -19,5 +20,6 @@
   "admin/storefront-permissions.tab.users.name.label": "admin/storefront-permissions.tab.users.name.label",
   "admin/storefront-permissions.tab.users.success": "admin/storefront-permissions.tab.users.success",
   "admin/storefront-permissions.title": "admin/storefront-permissions.title",
-  "admin/storefront-permissions.alert-pick": "admin/storefront-permissions.alert-pick"
+  "admin/storefront-permissions.alert-pick": "admin/storefront-permissions.alert-pick",
+  "admin/storefront-permissions.searchOrganizations": "admin/storefront-permissions.searchOrganizations"
 }

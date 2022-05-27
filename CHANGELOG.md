@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Autocomplete input to select an organization
+- Button to remove a user's B2B info
+- Heading and border for B2B info section
+
 ## [0.0.8] - 2022-02-18
 
 ### Added
@@ -18,6 +24,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [0.0.7] - 2022-01-10
 
 ### Removed
+
 - Can Impersonate
 - Console logs
 
@@ -26,10 +33,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [0.0.5] - 2021-12-28
 
 ### Added
+
 - Allow cleanup Organization selection
 
 ### Fixed
+
 - Cost Center not cleaning up after organization is changed
+
 ## [0.0.4] - 2021-11-10
 
 ## [0.0.3] - 2021-11-03

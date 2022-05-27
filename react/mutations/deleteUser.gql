@@ -1,0 +1,8 @@
+mutation DeleteUser($id: ID!, $userId: ID, $email: String!) {
+  deleteUser(id: $id, userId: $userId, email: $email)
+    @context(provider: "vtex.storefront-permissions") {
+    id
+    status
+    message
+  }
+}
