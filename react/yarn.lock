@@ -480,21 +480,29 @@ typescript@3.9.7:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.7.tgz#98d600a5ebdc38f40cb277522f12dc800e9e25fa"
   integrity sha512-BLbiRkiBzAwsjut4x/dsibSTB6yWpwT5qWmC2OfuCg3GgVQCSgMs4vEctYPhsaGtd0AeuuHMkjZ2h2WG8MSzRw==
 
-"vtex.admin-customers-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.admin-customers-graphql@3.0.1/public/@types/vtex.admin-customers-graphql":
-  version "3.0.1"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.admin-customers-graphql@3.0.1/public/@types/vtex.admin-customers-graphql#d18295715e60b1b7d917714530c22a98a1f4e88f"
+"vtex.admin-customers-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.admin-customers-graphql@3.0.2/public/@types/vtex.admin-customers-graphql":
+  version "3.0.2"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.admin-customers-graphql@3.0.2/public/@types/vtex.admin-customers-graphql#f560494187e1fbbd2d744bd6be92896140d8539f"
 
-"vtex.b2b-organizations-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.b2b-organizations-graphql@0.9.1/public/@types/vtex.b2b-organizations-graphql":
-  version "0.9.1"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.b2b-organizations-graphql@0.9.1/public/@types/vtex.b2b-organizations-graphql#f8752829d0902191de6f4b3bfa7580926b9cbe64"
+"vtex.b2b-organizations-graphql@https://b2borg2--sandboxusdev.myvtex.com/_v/private/typings/linked/v1/vtex.b2b-organizations-graphql@0.19.8+build1662661768/public/@types/vtex.b2b-organizations-graphql":
+  version "0.19.8"
+  resolved "https://b2borg2--sandboxusdev.myvtex.com/_v/private/typings/linked/v1/vtex.b2b-organizations-graphql@0.19.8+build1662661768/public/@types/vtex.b2b-organizations-graphql#b6c9c731b3c1c4c3012d43ec0d2a27ea29f4868f"
 
-"vtex.render-runtime@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.3/public/@types/vtex.render-runtime":
-  version "8.132.3"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.3/public/@types/vtex.render-runtime#c7dd142e384f38bd7a7c841543b73e9349fadc93"
+"vtex.render-runtime@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime":
+  version "8.132.4"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime#66bb41bd4d342e37c9d85172aad5f7eefebfb6dc"
 
-"vtex.styleguide@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.145.2/public/@types/vtex.styleguide":
-  version "9.145.2"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.145.2/public/@types/vtex.styleguide#ca64bf8408ad3eb487b0822dd68f77565c986a56"
+"vtex.storefront-permissions-components@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.storefront-permissions-components@0.2.0/public/@types/vtex.storefront-permissions-components":
+  version "0.2.0"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.storefront-permissions-components@0.2.0/public/@types/vtex.storefront-permissions-components#9cb628984efc7df805719a580180d8f90878ee1c"
+
+"vtex.storefront-permissions@https://b2borg2--sandboxusdev.myvtex.com/_v/private/typings/linked/v1/vtex.storefront-permissions@1.23.0+build1662661707/public/@types/vtex.storefront-permissions":
+  version "1.23.0"
+  resolved "https://b2borg2--sandboxusdev.myvtex.com/_v/private/typings/linked/v1/vtex.storefront-permissions@1.23.0+build1662661707/public/@types/vtex.storefront-permissions#1a59222d404a42ac9ee6a4adf2f4abb9d4d062d1"
+
+"vtex.styleguide@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.3/public/@types/vtex.styleguide":
+  version "9.146.3"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.3/public/@types/vtex.styleguide#05558160f29cd8f4aefe419844a4bd66e2b3fdbb"
 
 zen-observable-ts@^0.8.21:
   version "0.8.21"
