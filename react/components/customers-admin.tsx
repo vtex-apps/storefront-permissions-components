@@ -127,6 +127,7 @@ const initialState = {
   name: null,
   email: null,
   canImpersonate: false,
+  organizationName: null,
 }
 
 const UserEdit: FC<any> = (props: any) => {
@@ -150,7 +151,7 @@ const UserEdit: FC<any> = (props: any) => {
   })
 
   const [tabs, setTabs] = useState(0)
-  const [organizations, setOrganizations] = useState([])
+  const [organizations, setOrganizations] = useState([] as any)
   const [isRemoving, setIsRemoving] = useState(false)
 
   const { loading, refetch } = useQuery(GET_USER, {
@@ -217,6 +218,18 @@ const UserEdit: FC<any> = (props: any) => {
     })
   }
 
+  const roleOptions =
+    dataRoles?.listRoles?.map((role: any) => {
+      return {
+        value: role.id,
+        label: role.name,
+      }
+    }) ?? []
+
+  const optionsCost = parseOptions(
+    dataCostCenter?.getCostCentersByOrganizationId
+  )
+
   const handleSaveUser = () => {
     const variables = {
       clId: state.clId,
@@ -243,6 +256,18 @@ const UserEdit: FC<any> = (props: any) => {
           message: 'success',
         })
         refetchOrganizations()
+        setOrganizations([
+          ...organizations,
+          {
+            ...variables,
+            role: roleOptions.find((role: any) => role.roleId === state.roleId)
+              ?.name,
+            organizationName: state.organizationName,
+            costCenterName: optionsCost.find(
+              (costCenter: any) => costCenter.id === state.costId
+            )?.name,
+          },
+        ])
       })
       .catch(onMutationError)
   }
@@ -281,18 +306,6 @@ const UserEdit: FC<any> = (props: any) => {
         setIsRemoving(false)
       })
   }
-
-  const optionsCost = parseOptions(
-    dataCostCenter?.getCostCentersByOrganizationId
-  )
-
-  const roleOptions =
-    dataRoles?.listRoles?.map((role: any) => {
-      return {
-        value: role.id,
-        label: role.name,
-      }
-    }) ?? []
 
   if (state.costId && !called) {
     getCostCenter({
@@ -407,6 +420,7 @@ const UserEdit: FC<any> = (props: any) => {
                             ...state,
                             orgId: event.value,
                             costId: null,
+                            organizationName: event.label,
                           })
                           if (!event.value) return
                           getCostCenter({

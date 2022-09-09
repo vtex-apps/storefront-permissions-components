@@ -14,9 +14,9 @@
     "prop-types": "^15.7.2",
     "typescript": "3.9.7",
     "vtex.admin-customers-graphql": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.admin-customers-graphql@3.0.2/public/@types/vtex.admin-customers-graphql",
-    "vtex.b2b-organizations-graphql": "https://b2borg2--sandboxusdev.myvtex.com/_v/private/typings/linked/v1/vtex.b2b-organizations-graphql@0.19.8+build1662661768/public/@types/vtex.b2b-organizations-graphql",
+    "vtex.b2b-organizations-graphql": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.b2b-organizations-graphql@0.19.7/public/@types/vtex.b2b-organizations-graphql",
     "vtex.render-runtime": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime",
-    "vtex.storefront-permissions": "https://b2borg2--sandboxusdev.myvtex.com/_v/private/typings/linked/v1/vtex.storefront-permissions@1.23.0+build1662661707/public/@types/vtex.storefront-permissions",
+    "vtex.storefront-permissions": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.storefront-permissions@1.23.0/public/@types/vtex.storefront-permissions",
     "vtex.storefront-permissions-components": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.storefront-permissions-components@0.2.0/public/@types/vtex.storefront-permissions-components",
     "vtex.styleguide": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.3/public/@types/vtex.styleguide"
   },
