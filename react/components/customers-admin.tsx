@@ -251,6 +251,16 @@ const UserEdit: FC<any> = (props: any) => {
       canImpersonate: state.canImpersonate,
     }
 
+    const roleName = roleOptions.find(
+      (role: any) => role.value === state.roleId
+    )?.name
+
+    const costCenterName = optionsCost.find(
+      (costCenter: any) => costCenter.value === state.costId
+    )?.name
+
+    const { organizationName } = state
+
     saveUser({
       variables,
     })
@@ -261,7 +271,7 @@ const UserEdit: FC<any> = (props: any) => {
 
         setState({
           ...state,
-          id: state.id ?? res?.data?.saveUser?.id,
+          id: state.id ?? res?.data?.addUser?.id,
           message: 'success',
         })
         refetchOrganizations()
@@ -269,12 +279,10 @@ const UserEdit: FC<any> = (props: any) => {
           ...organizations,
           {
             ...variables,
-            role: roleOptions.find((role: any) => role.value === state.roleId)
-              ?.name,
-            organizationName: state.organizationName,
-            costCenterName: optionsCost.find(
-              (costCenter: any) => costCenter.value === state.costId
-            )?.name,
+            id: res?.data?.addUser?.id,
+            role: roleName,
+            organizationName,
+            costCenterName,
           },
         ])
       })
@@ -307,6 +315,7 @@ const UserEdit: FC<any> = (props: any) => {
           id: state.id ?? res?.data?.deleteUser?.id,
           message: 'success',
         })
+        setOrganizations([])
         refetch()
         refetchOrganizations()
       })
