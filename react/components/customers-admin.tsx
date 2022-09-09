@@ -173,6 +173,9 @@ const UserEdit: FC<any> = (props: any) => {
     setTabs(tab)
     setState({
       ...state,
+      roleId: null,
+      orgId: null,
+      costId: null,
       message: null,
     })
   }
@@ -196,7 +199,13 @@ const UserEdit: FC<any> = (props: any) => {
           handleTabs(1)
         }
 
-        setOrganizations(result)
+        setOrganizations([
+          ...result,
+          ...organizations.filter(
+            (item: any) =>
+              !result.find((subitem: any) => subitem.id !== item.id)
+          ),
+        ])
       },
     })
 
@@ -260,11 +269,11 @@ const UserEdit: FC<any> = (props: any) => {
           ...organizations,
           {
             ...variables,
-            role: roleOptions.find((role: any) => role.roleId === state.roleId)
+            role: roleOptions.find((role: any) => role.value === state.roleId)
               ?.name,
             organizationName: state.organizationName,
             costCenterName: optionsCost.find(
-              (costCenter: any) => costCenter.id === state.costId
+              (costCenter: any) => costCenter.value === state.costId
             )?.name,
           },
         ])
