@@ -1,15 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { FC } from 'react'
-import React, { useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import { useIntl, defineMessages } from 'react-intl'
 import { useQuery, useMutation, useLazyQuery } from 'react-apollo'
-import { Card, Button, Dropdown, Alert, Spinner } from 'vtex.styleguide'
+import {
+  Button,
+  Dropdown,
+  Alert,
+  Spinner,
+  Tabs,
+  Tab,
+  Table,
+} from 'vtex.styleguide'
 
 import OrganizationsAutocomplete from './OrganizationsAutocomplete'
 import GET_USER from '../queries/getUser.gql'
 import GET_ROLES from '../queries/ListRoles.gql'
 import GET_COST from '../queries/costCentersByOrg.gql'
-import SAVE_USER from '../mutations/saveUser.gql'
+import GET_ORGANIZATIONS from '../queries/getOrganizationsByEmail.graphql'
+import ADD_USER from '../mutations/addUser.gql'
 import DELETE_USER from '../mutations/deleteUser.gql'
 
 export const messages = defineMessages({
@@ -52,6 +61,26 @@ export const messages = defineMessages({
   save: {
     id: 'admin/storefront-permissions.button.save',
     defaultMessage: 'Save',
+  },
+  add: {
+    id: 'admin/storefront-permissions.button.add',
+    defaultMessage: 'Add',
+  },
+  remove: {
+    id: 'admin/storefront-permissions.button.remove',
+    defaultMessage: 'Remove',
+  },
+  options: {
+    id: 'admin/storefront-permissions.label.options',
+    defaultMessage: 'Options',
+  },
+  b2bRoles: {
+    id: 'admin/storefront-permissions.label.b2bRoles',
+    defaultMessage: 'B2b Roles',
+  },
+  addNew: {
+    id: 'admin/storefront-permissions.button.addNew',
+    defaultMessage: 'Add New',
   },
   delete: {
     id: 'admin/storefront-permissions.button.delete',
@@ -98,6 +127,7 @@ const initialState = {
   name: null,
   email: null,
   canImpersonate: false,
+  organizationName: null,
 }
 
 const UserEdit: FC<any> = (props: any) => {
@@ -120,11 +150,11 @@ const UserEdit: FC<any> = (props: any) => {
     email,
   })
 
-  const {
-    data: userData,
-    loading,
-    refetch,
-  } = useQuery(GET_USER, {
+  const [tabs, setTabs] = useState(0)
+  const [organizations, setOrganizations] = useState([] as any)
+  const [isRemoving, setIsRemoving] = useState(false)
+
+  const { loading, refetch } = useQuery(GET_USER, {
     skip: !id,
     variables: {
       id,
@@ -139,14 +169,56 @@ const UserEdit: FC<any> = (props: any) => {
     },
   })
 
+  const handleTabs = (tab: number) => {
+    setTabs(tab)
+    setState({
+      ...state,
+      roleId: null,
+      orgId: null,
+      costId: null,
+      message: null,
+    })
+  }
+
+  const { refetch: refetchOrganizations, loading: loadingOrganizations } =
+    useQuery(GET_ORGANIZATIONS, {
+      variables: {
+        email,
+      },
+      fetchPolicy: 'network-only',
+      notifyOnNetworkStatusChange: true,
+      onCompleted: (res: any) => {
+        const result = res.getOrganizationsByEmail?.map((organization: any) => {
+          return {
+            ...organization,
+            role: organization.role.name,
+          }
+        })
+
+        if (result.length === 0) {
+          handleTabs(1)
+        }
+
+        setOrganizations([
+          ...result,
+          ...organizations.filter(
+            (item: any) =>
+              !result.find((subitem: any) => subitem.id !== item.id)
+          ),
+        ])
+      },
+    })
+
   const { loading: loadingRoles, data: dataRoles } = useQuery(GET_ROLES)
 
-  const [saveUser, { loading: saveUserLoading }] = useMutation(SAVE_USER)
+  const [saveUser, { loading: saveUserLoading }] = useMutation(ADD_USER)
 
   const [deleteUser, { loading: deleteUserLoading }] = useMutation(DELETE_USER)
 
-  const [getCostCenter, { data: dataCostCenter, called }] =
-    useLazyQuery(GET_COST)
+  const [
+    getCostCenter,
+    { data: dataCostCenter, called, loading: loadingCostCenters },
+  ] = useLazyQuery(GET_COST)
 
   const onMutationError = () => {
     setState({
@@ -155,9 +227,20 @@ const UserEdit: FC<any> = (props: any) => {
     })
   }
 
+  const roleOptions =
+    dataRoles?.listRoles?.map((role: any) => {
+      return {
+        value: role.id,
+        label: role.name,
+      }
+    }) ?? []
+
+  const optionsCost = parseOptions(
+    dataCostCenter?.getCostCentersByOrganizationId
+  )
+
   const handleSaveUser = () => {
     const variables = {
-      id: state.id,
       clId: state.clId,
       userId: state.userId,
       roleId: state.roleId,
@@ -167,6 +250,16 @@ const UserEdit: FC<any> = (props: any) => {
       email: state.email,
       canImpersonate: state.canImpersonate,
     }
+
+    const roleName = roleOptions.find(
+      (role: any) => role.value === state.roleId
+    )?.name
+
+    const costCenterName = optionsCost.find(
+      (costCenter: any) => costCenter.value === state.costId
+    )?.name
+
+    const { organizationName } = state
 
     saveUser({
       variables,
@@ -178,19 +271,33 @@ const UserEdit: FC<any> = (props: any) => {
 
         setState({
           ...state,
-          id: state.id ?? res?.data?.saveUser?.id,
+          id: state.id ?? res?.data?.addUser?.id,
           message: 'success',
         })
+        refetchOrganizations()
+        setOrganizations([
+          ...organizations,
+          {
+            ...variables,
+            id: res?.data?.addUser?.id,
+            role: roleName,
+            organizationName,
+            costCenterName,
+          },
+        ])
       })
       .catch(onMutationError)
   }
 
-  const handleDeleteUser = () => {
+  const handleDeleteUser = (userData: any) => {
     const variables = {
-      id: state.id,
-      userId: state.userId,
+      id: userData.id,
+      userId: userData.userId,
       email: state.email,
+      clId: userData.clId,
     }
+
+    setIsRemoving(true)
 
     deleteUser({
       variables,
@@ -208,22 +315,15 @@ const UserEdit: FC<any> = (props: any) => {
           id: state.id ?? res?.data?.deleteUser?.id,
           message: 'success',
         })
+        setOrganizations([])
         refetch()
+        refetchOrganizations()
       })
       .catch(onMutationError)
+      .finally(() => {
+        setIsRemoving(false)
+      })
   }
-
-  const optionsCost = parseOptions(
-    dataCostCenter?.getCostCentersByOrganizationId
-  )
-
-  const roleOptions =
-    dataRoles?.listRoles?.map((role: any) => {
-      return {
-        value: role.id,
-        label: role.name,
-      }
-    }) ?? []
 
   if (state.costId && !called) {
     getCostCenter({
@@ -233,150 +333,194 @@ const UserEdit: FC<any> = (props: any) => {
     })
   }
 
-  if (loading || loadingRoles) {
+  if (loading || loadingRoles || loadingCostCenters) {
     return (
-      <div className="w-100 pt6">
+      <div className="w-100 pt6 flex items-center justify-center">
         <Spinner />
       </div>
     )
   }
 
+  const customSchema = {
+    properties: {
+      role: {
+        title: formatMessage(messages.role),
+      },
+      organizationName: {
+        title: formatMessage(messages.organization),
+      },
+      costCenterName: {
+        title: formatMessage(messages.costCenter),
+      },
+      options: {
+        title: formatMessage(messages.options),
+        // you can customize cell component render (also header component with headerRenderer)
+        cellRenderer: ({ rowData }: any) => {
+          return (
+            <Fragment>
+              <div className="mt2 mb2">
+                <Button
+                  variation="danger"
+                  size="small"
+                  disabled={isRemoving}
+                  onClick={() => handleDeleteUser(rowData)}
+                >
+                  {formatMessage(messages.remove)}
+                </Button>
+              </div>
+            </Fragment>
+          )
+        },
+      },
+    },
+  }
+
   return (
     <div className="w-100 pt6">
-      <Card>
-        <h5 className="t-heading-5 fw4 mt1 mb6">
-          {formatMessage(messages.b2bInfo)}
-        </h5>
-        {showName && <div className="mb5">{state.name}</div>}
-        {showEmail && <div className="mb5">{state.email}</div>}
-        {roleOptions.length > 1 && (
-          <div className="mb5 w-80">
-            <Dropdown
-              label={formatMessage(messages.role)}
-              options={roleOptions}
-              value={state.roleId}
-              onChange={(_: any, v: string) => {
-                setState({
-                  ...state,
-                  roleId: v,
-                })
-              }}
+      <Tabs fullWidth className="mb4">
+        <Tab
+          active={tabs === 0}
+          label={formatMessage(messages.b2bRoles)}
+          onClick={() => handleTabs(0)}
+        />
+        <Tab
+          active={tabs === 1}
+          label={formatMessage(messages.addNew)}
+          onClick={() => handleTabs(1)}
+        />
+      </Tabs>
+      <div className="pa7">
+        {tabs === 0 ? (
+          <Fragment>
+            <Table
+              loading={loadingOrganizations || isRemoving}
+              fullWidth
+              schema={customSchema}
+              items={organizations}
             />
-          </div>
-        )}
-
-        {dataRoles && state.roleId && (
-          <div className="mb5 w-100">
-            <div className="flex">
-              <div className="mr2 w-80">
-                <label className="h-100">
-                  <span className="db mt0 mb3 c-on-base t-small">
-                    {formatMessage(messages.organization)}
-                  </span>
-                  <OrganizationsAutocomplete
-                    organizationId={state.orgId}
-                    onChange={(event) => {
-                      if (event.value === state.orgId) {
-                        return
-                      }
-
-                      setState({
-                        ...state,
-                        orgId: event.value,
-                        costId: null,
-                      })
-                      if (!event.value) return
-                      getCostCenter({
-                        variables: {
-                          id: event.value,
-                        },
-                      })
-                    }}
-                  />
-                </label>
+          </Fragment>
+        ) : (
+          <Fragment>
+            {showName && <div className="mb5">{state.name}</div>}
+            {showEmail && <div className="mb5">{state.email}</div>}
+            {roleOptions.length > 1 && (
+              <div className="mb5">
+                <Dropdown
+                  label={formatMessage(messages.role)}
+                  options={roleOptions}
+                  value={state.roleId}
+                  onChange={(_: any, v: string) => {
+                    setState({
+                      ...state,
+                      roleId: v,
+                    })
+                  }}
+                />
               </div>
-            </div>
-          </div>
-        )}
+            )}
 
-        {state.orgId && (
-          <div className="mb5 w-80">
-            <Dropdown
-              label={formatMessage(messages.costCenter)}
-              options={optionsCost}
-              value={state.costId}
-              onChange={(_: any, costId: string) => {
-                setState({ ...state, costId })
-              }}
-            />
-          </div>
-        )}
+            {dataRoles && state.roleId && (
+              <div className="mb5 w-100">
+                <div className="flex">
+                  <div className="w-100">
+                    <label className="h-100">
+                      <span className="db mt0 mb3 c-on-base t-small">
+                        {formatMessage(messages.organization)}
+                      </span>
+                      <OrganizationsAutocomplete
+                        organizationId={state.orgId}
+                        onChange={(event) => {
+                          if (event.value === state.orgId) {
+                            return
+                          }
 
-        {state.orgId && !state.costId ? (
-          <div className="mv4">
-            <Alert type="error">{formatMessage(messages.alertPick)}</Alert>
-          </div>
-        ) : null}
+                          setState({
+                            ...state,
+                            orgId: event.value,
+                            costId: null,
+                            organizationName: event.label,
+                          })
+                          if (!event.value) return
+                          getCostCenter({
+                            variables: {
+                              id: event.value,
+                            },
+                          })
+                        }}
+                      />
+                    </label>
+                  </div>
+                </div>
+              </div>
+            )}
 
-        <div className="mv4 flex justify-start">
-          {showCancel && onCancel && (
-            <div className="mr3">
+            {state.orgId && (
+              <div className="mb5">
+                <Dropdown
+                  label={formatMessage(messages.costCenter)}
+                  options={optionsCost}
+                  value={state.costId}
+                  onChange={(_: any, costId: string) => {
+                    setState({ ...state, costId })
+                  }}
+                />
+              </div>
+            )}
+
+            {state.orgId && !state.costId ? (
+              <div className="mv4">
+                <Alert type="error">{formatMessage(messages.alertPick)}</Alert>
+              </div>
+            ) : null}
+
+            <div className="mv4 flex justify-start">
+              {showCancel && onCancel && (
+                <div className="mr3">
+                  <Button
+                    variation="tertiary"
+                    disabled={loading}
+                    onClick={() => {
+                      onCancel()
+                    }}
+                  >
+                    {formatMessage(messages.cancel)}
+                  </Button>
+                </div>
+              )}
               <Button
-                variation="tertiary"
-                disabled={loading}
+                variation="primary"
+                disabled={
+                  loading ||
+                  saveUserLoading ||
+                  deleteUserLoading ||
+                  !state.name ||
+                  !state.email ||
+                  !state.orgId ||
+                  !state.costId ||
+                  !state.roleId
+                }
                 onClick={() => {
-                  onCancel()
+                  handleSaveUser()
                 }}
               >
-                {formatMessage(messages.cancel)}
+                {formatMessage(messages.add)}
               </Button>
             </div>
-          )}
-          <Button
-            variation="primary"
-            disabled={
-              loading ||
-              saveUserLoading ||
-              deleteUserLoading ||
-              !state.name ||
-              !state.email ||
-              !state.orgId ||
-              !state.costId ||
-              !state.roleId
-            }
-            onClick={() => {
-              handleSaveUser()
-            }}
-          >
-            {formatMessage(messages.save)}
-          </Button>
-          {userData?.getUser?.roleId && (
-            <div className="ml3">
-              <Button
-                variation="danger"
-                disabled={loading || saveUserLoading || deleteUserLoading}
-                onClick={() => {
-                  handleDeleteUser()
+            {state.message && (
+              <Alert
+                type={state.message}
+                onClose={() => {
+                  setState({ ...state, message: null })
                 }}
               >
-                {formatMessage(messages.delete)}
-              </Button>
-            </div>
-          )}
-        </div>
-        {state.message && (
-          <Alert
-            type={state.message}
-            onClose={() => {
-              setState({ ...state, message: null })
-            }}
-          >
-            {state.message === 'success'
-              ? formatMessage(messages.success)
-              : formatMessage(messages.error)}
-          </Alert>
+                {state.message === 'success'
+                  ? formatMessage(messages.success)
+                  : formatMessage(messages.error)}
+              </Alert>
+            )}
+          </Fragment>
         )}
-      </Card>
+      </div>
     </div>
   )
 }
