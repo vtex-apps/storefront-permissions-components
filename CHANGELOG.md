@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.3.1] - 2022-11-11
+
 ### Fixed
 
 - minimist package updated from 1.2.5 to 1.2.7 due a critical security vulnerability
