@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [0.3.1] - 2022-11-11
 
+### Changed
+
+- Run schedule job only on saturday
+
 ### Fixed
 
 - minimist package updated from 1.2.5 to 1.2.7 due a critical security vulnerability
