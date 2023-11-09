@@ -444,6 +444,7 @@ const UserEdit: FC<any> = (props: any) => {
                           getCostCenter({
                             variables: {
                               id: event.value,
+                              pageSize: 100,
                             },
                           })
                         }}
