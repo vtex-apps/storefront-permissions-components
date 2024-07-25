@@ -11,7 +11,7 @@ const initialState = {
   status: ['active', 'on-hold', 'inactive'],
   search: '',
   page: 1,
-  pageSize: 999,
+  pageSize: 500,
   sortOrder: 'ASC',
   sortedBy: 'name',
 }
