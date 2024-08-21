@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-- shows more options in the organization dropdown
+### Fixed
+- shows more options in the cost centers dropdown
 
 ### Removed
 - [ENGINEERS-1247] - Disable cypress tests in PR level
