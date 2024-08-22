@@ -11,7 +11,7 @@ const initialState = {
   status: ['active', 'on-hold', 'inactive'],
   search: '',
   page: 1,
-  pageSize: 25,
+  pageSize: 500,
   sortOrder: 'ASC',
   sortedBy: 'name',
 }
@@ -78,7 +78,7 @@ const OrganizationsAutocomplete = ({ onChange, organizationId }: Props) => {
   }, [data])
 
   useEffect(() => {
-    if (term && term.length > 2) {
+    if (term && term.length > 1) {
       setHasChanged(true)
       refetch({
         ...initialState,
