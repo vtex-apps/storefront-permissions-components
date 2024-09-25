@@ -500,9 +500,9 @@ typescript@3.9.7:
   version "1.23.0"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.storefront-permissions@1.23.0/public/@types/vtex.storefront-permissions#2a12e48a1b630d6d9cd64115572bcae55a7aa756"
 
-"vtex.styleguide@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.3/public/@types/vtex.styleguide":
-  version "9.146.3"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.3/public/@types/vtex.styleguide#05558160f29cd8f4aefe419844a4bd66e2b3fdbb"
+"vtex.styleguide@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.13/public/@types/vtex.styleguide":
+  version "9.146.13"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.13/public/@types/vtex.styleguide#f4ccbc54621bf5114ddd115b6032ae320f2eba55"
 
 zen-observable-ts@^0.8.21:
   version "0.8.21"

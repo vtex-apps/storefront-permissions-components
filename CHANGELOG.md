@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Implement cost center autocomplete and lazyload in organization autocomplete
+- Implement cost center autocomplete, lazyload in organization autocomplete and maxHeight prop
 
 ### Fixed
 

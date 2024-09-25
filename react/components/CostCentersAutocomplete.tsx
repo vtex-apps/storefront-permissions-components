@@ -63,6 +63,7 @@ const CostCenterAutocomplete = ({ onChange, organizationId }: Props) => {
   }, [debouncedSearchTerm])
 
   const options = {
+    maxHeight: 200,
     onSelect: onChange,
     loading,
     value: data?.getCostCentersByOrganizationId?.data?.map(

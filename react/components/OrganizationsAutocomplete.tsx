@@ -105,6 +105,7 @@ const OrganizationsAutocomplete = ({ onChange, organizationId }: Props) => {
 
   const options = useMemo(
     () => ({
+      maxHeight: 250,
       onSelect: onChange,
       loading,
       value: values,
