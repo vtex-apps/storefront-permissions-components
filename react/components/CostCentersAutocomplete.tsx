@@ -4,7 +4,7 @@ import { AutocompleteInput } from 'vtex.styleguide'
 import { useIntl } from 'react-intl'
 
 import { messages } from './customers-admin'
-import GET_COST from '../queries/costCentersByOrg.gql'
+import GET_COST_CENTER_BY_ORG from '../queries/costCentersByOrg.gql'
 
 interface Props {
   onChange: (value: { value: string | null; label: string }) => void
@@ -25,7 +25,7 @@ const CostCenterAutocomplete = ({ onChange, organizationId }: Props) => {
   const [debouncedSearchTerm, setDebouncedSearchTerm] =
     useState(costCenterTextInput)
 
-  const { data, loading, refetch } = useQuery(GET_COST, {
+  const { data, loading, refetch } = useQuery(GET_COST_CENTER_BY_ORG, {
     variables: {
       ...initialState,
       id: organizationId,
