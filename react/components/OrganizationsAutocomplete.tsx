@@ -70,14 +70,14 @@ const OrganizationsAutocomplete = ({ onChange, organizationId }: Props) => {
   }, [debouncedTerm, refetch])
 
   useEffect(() => {
-    // eslint-disable-next-line vtex/prefer-early-return
-    if (organization?.getOrganizationById) {
-      const { name, id } = organization.getOrganizationById
-
-      setTerm(name)
-
-      onChange({ value: id, label: name })
+    if (!organization?.getOrganizationById) {
+      return
     }
+
+    const { name, id } = organization.getOrganizationById
+
+    setTerm(name)
+    onChange({ value: id, label: name })
   }, [organization, onChange])
 
   useEffect(() => {
