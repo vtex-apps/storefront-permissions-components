@@ -93,7 +93,6 @@ const OrganizationsAutocomplete = ({ onChange, organizationId }: Props) => {
     }
   }, [data])
 
-
   const onClear = useCallback(() => {
     setTerm('')
 
@@ -125,7 +124,6 @@ const OrganizationsAutocomplete = ({ onChange, organizationId }: Props) => {
       onClear()
     }
   }, [term])
-
 
   const input = useMemo(
     () => ({
