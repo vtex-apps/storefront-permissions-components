@@ -14,6 +14,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Run schedule job only on saturday
+=======
+## [0.3.2] - 2024-08-22
+
+### Fixed
+- shows more options in the cost centers dropdown
+
 
 ### Removed
 - [ENGINEERS-1247] - Disable cypress tests in PR level

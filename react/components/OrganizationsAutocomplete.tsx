@@ -11,7 +11,7 @@ const initialState = {
   status: ['active', 'on-hold', 'inactive'],
   search: '',
   page: 1,
-  pageSize: 25,
+  pageSize: 500,
   sortOrder: 'ASC',
   sortedBy: 'name',
 }
@@ -93,6 +93,7 @@ const OrganizationsAutocomplete = ({ onChange, organizationId }: Props) => {
     }
   }, [data])
 
+
   const onClear = useCallback(() => {
     setTerm('')
 
@@ -112,6 +113,19 @@ const OrganizationsAutocomplete = ({ onChange, organizationId }: Props) => {
     }),
     [loading, values, onChange, orgLoading]
   )
+
+  useEffect(() => {
+    if (term && term.length > 1) {
+      setHasChanged(true)
+      refetch({
+        ...initialState,
+        search: term,
+      })
+    } else if (term === '') {
+      onClear()
+    }
+  }, [term])
+
 
   const input = useMemo(
     () => ({
