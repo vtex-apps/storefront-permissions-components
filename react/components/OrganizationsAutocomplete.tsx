@@ -115,7 +115,6 @@ const OrganizationsAutocomplete = ({ onChange, organizationId }: Props) => {
 
   useEffect(() => {
     if (term && term.length > 1) {
-      setHasChanged(true)
       refetch({
         ...initialState,
         search: term,
