@@ -5,6 +5,7 @@ import { useIntl } from 'react-intl'
 
 import { messages } from './customers-admin'
 import GET_COST_CENTER_BY_ORG from '../queries/costCentersByOrg.gql'
+import { SEARCH_TERM_DELAY_MS } from '../constants/debounceDelay'
 
 interface Props {
   onChange: (value: { value: string | null; label: string }) => void
@@ -43,7 +44,7 @@ const CostCenterAutocomplete = ({ onChange, organizationId }: Props) => {
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearchTerm(costCenterTextInput)
-    }, 500) // 500ms delay
+    }, SEARCH_TERM_DELAY_MS) // 500ms delay
 
     return () => {
       clearTimeout(handler)

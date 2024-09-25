@@ -6,6 +6,7 @@ import { useIntl } from 'react-intl'
 import { messages } from './customers-admin'
 import GET_ORGANIZATIONS from '../queries/listOrganizations.gql'
 import GET_ORGANIZATION_BY_ID from '../queries/getOrganization.graphql'
+import { SEARCH_TERM_DELAY_MS } from '../constants/debounceDelay'
 
 const initialState = {
   status: ['active', 'on-hold', 'inactive'],
@@ -50,7 +51,7 @@ const OrganizationsAutocomplete = ({ onChange, organizationId }: Props) => {
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedTerm(term)
-    }, 500) // 500ms delay
+    }, SEARCH_TERM_DELAY_MS) // 500ms delay
 
     return () => clearTimeout(handler)
   }, [term])
