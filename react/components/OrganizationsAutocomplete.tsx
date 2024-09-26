@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo, useCallback } from 'react'
 import { useQuery } from 'react-apollo'
 import { AutocompleteInput } from 'vtex.styleguide'
 import { useIntl } from 'react-intl'
@@ -6,6 +6,7 @@ import { useIntl } from 'react-intl'
 import { messages } from './customers-admin'
 import GET_ORGANIZATIONS from '../queries/listOrganizations.gql'
 import GET_ORGANIZATION_BY_ID from '../queries/getOrganization.graphql'
+import { SEARCH_TERM_DELAY_MS } from '../constants/debounceDelay'
 
 const initialState = {
   status: ['active', 'on-hold', 'inactive'],
@@ -24,62 +25,97 @@ interface Props {
 const OrganizationsAutocomplete = ({ onChange, organizationId }: Props) => {
   const { formatMessage } = useIntl()
   const [term, setTerm] = useState('')
-  const [hasChanged, setHasChanged] = useState(false)
-  const [values, setValues] = useState([] as any)
+  const [debouncedTerm, setDebouncedTerm] = useState(term)
+
+  const [values, setValues] = useState<Array<{ value: string; label: string }>>(
+    []
+  )
+
   const { data, loading, refetch } = useQuery(GET_ORGANIZATIONS, {
     variables: initialState,
     ssr: false,
     notifyOnNetworkStatusChange: true,
   })
 
-  const { data: organization } = useQuery(GET_ORGANIZATION_BY_ID, {
-    variables: { id: organizationId },
-    ssr: false,
-    fetchPolicy: 'network-only',
-    notifyOnNetworkStatusChange: true,
-    skip: !organizationId,
-  })
-
-  const options = {
-    onSelect: (value: any) => onChange(value),
-    loading,
-    value: values,
-  }
-
-  const onClear = () => {
-    if (!hasChanged) return
-    setTerm('')
-    onChange({ value: null, label: '' })
-  }
+  const { data: organization, loading: orgLoading } = useQuery(
+    GET_ORGANIZATION_BY_ID,
+    {
+      variables: { id: organizationId },
+      ssr: false,
+      fetchPolicy: 'network-only',
+      notifyOnNetworkStatusChange: true,
+      skip: !organizationId,
+    }
+  )
 
   useEffect(() => {
-    if (!organization) {
+    const handler = setTimeout(() => {
+      setDebouncedTerm(term)
+    }, SEARCH_TERM_DELAY_MS) // 500ms delay
+
+    return () => clearTimeout(handler)
+  }, [term])
+
+  useEffect(() => {
+    if (debouncedTerm.length > 2) {
+      refetch({
+        ...initialState,
+        search: debouncedTerm,
+      })
+    } else if (debouncedTerm === '') {
+      refetch({
+        ...initialState,
+        search: '',
+      })
+    }
+  }, [debouncedTerm, refetch])
+
+  useEffect(() => {
+    if (!organization?.getOrganizationById) {
       return
     }
 
     const { name, id } = organization.getOrganizationById
 
     setTerm(name)
-    setHasChanged(true)
     onChange({ value: id, label: name })
-  }, [organization])
+  }, [organization, onChange])
 
   useEffect(() => {
     if (data?.getOrganizations?.data) {
       setValues(
-        data.getOrganizations.data.map((item: any) => {
-          return {
+        data.getOrganizations.data.map(
+          (item: { id: string; name: string }) => ({
             value: item.id,
             label: item.name,
-          }
-        })
+          })
+        )
       )
     }
   }, [data])
 
+  const onClear = useCallback(() => {
+    setTerm('')
+
+    refetch({
+      ...initialState,
+      search: '',
+    })
+    onChange({ value: null, label: '' })
+  }, [onChange, refetch])
+
+  const options = useMemo(
+    () => ({
+      maxHeight: 250,
+      onSelect: onChange,
+      loading,
+      value: values,
+    }),
+    [loading, values, onChange, orgLoading]
+  )
+
   useEffect(() => {
     if (term && term.length > 1) {
-      setHasChanged(true)
       refetch({
         ...initialState,
         search: term,
@@ -89,14 +125,15 @@ const OrganizationsAutocomplete = ({ onChange, organizationId }: Props) => {
     }
   }, [term])
 
-  const input = {
-    onChange: (_term: string) => {
-      setTerm(_term)
-    },
-    onClear,
-    placeholder: formatMessage(messages.searchOrganizations),
-    value: term,
-  }
+  const input = useMemo(
+    () => ({
+      onChange: (_term: string) => setTerm(_term),
+      onClear,
+      placeholder: formatMessage(messages.searchOrganizations),
+      value: term,
+    }),
+    [term, onClear, formatMessage]
+  )
 
   return <AutocompleteInput input={input} options={options} />
 }

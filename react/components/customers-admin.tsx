@@ -20,6 +20,7 @@ import GET_COST from '../queries/costCentersByOrg.gql'
 import GET_ORGANIZATIONS from '../queries/getOrganizationsByEmail.graphql'
 import ADD_USER from '../mutations/addUser.gql'
 import DELETE_USER from '../mutations/deleteUser.gql'
+import CostCenterAutocomplete from './CostCentersAutocomplete'
 
 export const messages = defineMessages({
   b2bInfo: {
@@ -455,15 +456,22 @@ const UserEdit: FC<any> = (props: any) => {
             )}
 
             {state.orgId && (
-              <div className="mb5">
-                <Dropdown
-                  label={formatMessage(messages.costCenter)}
-                  options={optionsCost}
-                  value={state.costId}
-                  onChange={(_: any, costId: string) => {
-                    setState({ ...state, costId })
-                  }}
-                />
+              <div className="mb5 w-100">
+                <div className="flex">
+                  <div className="w-100">
+                    <label className="h-100">
+                      <span className="db mt0 mb3 c-on-base t-small">
+                        {formatMessage(messages.costCenter)}
+                      </span>
+                      <CostCenterAutocomplete
+                        organizationId={state.orgId}
+                        onChange={(event) => {
+                          setState({ ...state, costId: event.value })
+                        }}
+                      />
+                    </label>
+                  </div>
+                </div>
               </div>
             )}
 
