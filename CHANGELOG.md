@@ -11,10 +11,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Implement cost center autocomplete, lazyload in organization autocomplete and maxHeight prop
 
-### Fixed
-
-- Run schedule job only on saturday
-
 ## [0.3.2] - 2024-08-22
 
 ### Fixed
