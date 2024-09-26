@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.4.0] - 2024-09-26
+
 ### Fixed
 
 - Implement cost center autocomplete, lazyload in organization autocomplete and maxHeight prop
