@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useQuery } from 'react-apollo'
-import { AutocompleteInput } from 'vtex.styleguide'
-import { useIntl } from 'react-intl'
 
+import { useIntl } from 'react-intl'
+import { EXPERIMENTAL_Select } from 'vtex.styleguide'
 import { messages } from './customers-admin'
 import GET_COST_CENTER_BY_ORG from '../queries/costCentersByOrg.gql'
 import { SEARCH_TERM_DELAY_MS } from '../constants/debounceDelay'
@@ -36,10 +36,21 @@ const CostCenterAutocomplete = ({ onChange, organizationId }: Props) => {
     skip: !organizationId,
   })
 
-  const onClear = () => {
-    setCostCenterTextInput('')
-    onChange({ value: null, label: '' })
-  }
+  const options =
+    data?.getCostCentersByOrganizationId?.data?.map(
+      (costCenter: { id: string; name: string }) => ({
+        value: costCenter.id,
+        label: costCenter.name,
+      })
+    ) || []
+
+  const handleSearchInputChange = (debouncedSearchTerm: string) => {
+    if (!debouncedSearchTerm.trim()) {
+      setCostCenterTextInput(debouncedSearchTerm)
+    }
+    setCostCenterTextInput(debouncedSearchTerm)
+
+}
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -59,32 +70,24 @@ const CostCenterAutocomplete = ({ onChange, organizationId }: Props) => {
         search: debouncedSearchTerm,
       })
     } else if (debouncedSearchTerm === '') {
-      onClear()
+      onChange({ value: null, label: '' })
     }
   }, [debouncedSearchTerm])
 
-  const options = {
-    maxHeight: 200,
-    onSelect: onChange,
-    loading,
-    value: data?.getCostCentersByOrganizationId?.data?.map(
-      (costCenter: { id: string; name: string }) => ({
-        value: costCenter.id,
-        label: costCenter.name,
-      })
-    ),
+  const handleChange = (selectedOption: { value: string | null; label: string } | null) => {
+    onChange(selectedOption || { value: null, label: '' }) 
   }
 
-  const input = {
-    onChange: (_term: string) => {
-      setCostCenterTextInput(_term)
-    },
-    onClear,
-    placeholder: formatMessage(messages.costCenter),
-    value: costCenterTextInput,
-  }
-
-  return <AutocompleteInput input={input} options={options} />
+  return (
+    <EXPERIMENTAL_Select
+      onSearchInputChange={handleSearchInputChange}
+      onChange={handleChange}
+      loading={loading}
+      options={options}
+      placeholder={formatMessage(messages.costCenter)}
+      multi={false}
+    />
+  )
 }
 
 export default CostCenterAutocomplete
