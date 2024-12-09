@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useQuery } from 'react-apollo'
 import { useIntl } from 'react-intl'
 import { EXPERIMENTAL_Select } from 'vtex.styleguide'
-import { messages } from './customers-admin'
 
+import { messages } from './customers-admin'
 import GET_COST_CENTER_BY_ORG from '../queries/costCentersByOrg.gql'
 import { SEARCH_TERM_DELAY_MS } from '../constants/debounceDelay'
 
@@ -44,9 +44,9 @@ const CostCenterAutocomplete = ({ onChange, organizationId }: Props) => {
       })
     ) || []
 
-    const handleSearchInputChange = (searchInput: string | null) => {
-      setCostCenterTextInput(searchInput ?? '') 
-    }
+  const handleSearchInputChange = (searchInput: string | null) => {
+    setCostCenterTextInput(searchInput ?? '')
+  }
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -75,7 +75,9 @@ const CostCenterAutocomplete = ({ onChange, organizationId }: Props) => {
     }
   }, [debouncedSearchTerm])
 
-  const handleChange = (selectedOption: { value: string | null; label: string } | null) => {
+  const handleChange = (
+    selectedOption: { value: string | null; label: string } | null
+  ) => {
     if (!selectedOption || !selectedOption.value) {
       setCostCenterTextInput('')
       refetch({
@@ -84,6 +86,7 @@ const CostCenterAutocomplete = ({ onChange, organizationId }: Props) => {
         search: '',
       })
     }
+
     onChange(selectedOption ?? { value: null, label: '' })
   }
 
