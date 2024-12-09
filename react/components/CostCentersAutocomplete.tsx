@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useQuery } from 'react-apollo'
-
 import { useIntl } from 'react-intl'
 import { EXPERIMENTAL_Select } from 'vtex.styleguide'
 import { messages } from './customers-admin'
+
 import GET_COST_CENTER_BY_ORG from '../queries/costCentersByOrg.gql'
 import { SEARCH_TERM_DELAY_MS } from '../constants/debounceDelay'
 
@@ -44,11 +44,8 @@ const CostCenterAutocomplete = ({ onChange, organizationId }: Props) => {
       })
     ) || []
 
-  const handleSearchInputChange = (debouncedSearchTerm: string) => {
-    if (!debouncedSearchTerm.trim()) {
-      setCostCenterTextInput(debouncedSearchTerm)
-    }
-    setCostCenterTextInput(debouncedSearchTerm)
+  const handleSearchInputChange = (serachInput: string) => {
+    setCostCenterTextInput(serachInput)
 
 }
 
@@ -75,7 +72,7 @@ const CostCenterAutocomplete = ({ onChange, organizationId }: Props) => {
   }, [debouncedSearchTerm])
 
   const handleChange = (selectedOption: { value: string | null; label: string } | null) => {
-    onChange(selectedOption || { value: null, label: '' }) 
+    onChange(selectedOption ?? { value: null, label: '' }) 
   }
 
   return (
@@ -86,6 +83,7 @@ const CostCenterAutocomplete = ({ onChange, organizationId }: Props) => {
       options={options}
       placeholder={formatMessage(messages.costCenter)}
       multi={false}
+      valuesMaxHeight={200}
     />
   )
 }
