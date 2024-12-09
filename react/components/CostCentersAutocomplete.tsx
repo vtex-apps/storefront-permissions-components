@@ -44,10 +44,9 @@ const CostCenterAutocomplete = ({ onChange, organizationId }: Props) => {
       })
     ) || []
 
-  const handleSearchInputChange = (serachInput: string) => {
-    setCostCenterTextInput(serachInput)
-
-}
+    const handleSearchInputChange = (searchInput: string | null) => {
+      setCostCenterTextInput(searchInput ?? '') 
+    }
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -67,12 +66,25 @@ const CostCenterAutocomplete = ({ onChange, organizationId }: Props) => {
         search: debouncedSearchTerm,
       })
     } else if (debouncedSearchTerm === '') {
+      refetch({
+        ...initialState,
+        id: organizationId,
+        search: '',
+      })
       onChange({ value: null, label: '' })
     }
   }, [debouncedSearchTerm])
 
   const handleChange = (selectedOption: { value: string | null; label: string } | null) => {
-    onChange(selectedOption ?? { value: null, label: '' }) 
+    if (!selectedOption || !selectedOption.value) {
+      setCostCenterTextInput('')
+      refetch({
+        ...initialState,
+        id: organizationId,
+        search: '',
+      })
+    }
+    onChange(selectedOption ?? { value: null, label: '' })
   }
 
   return (
@@ -84,6 +96,7 @@ const CostCenterAutocomplete = ({ onChange, organizationId }: Props) => {
       placeholder={formatMessage(messages.costCenter)}
       multi={false}
       valuesMaxHeight={200}
+      claerable={true}
     />
   )
 }
