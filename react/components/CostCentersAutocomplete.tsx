@@ -66,11 +66,6 @@ const CostCenterAutocomplete = ({ onChange, organizationId }: Props) => {
         search: debouncedSearchTerm,
       })
     } else if (debouncedSearchTerm === '') {
-      refetch({
-        ...initialState,
-        id: organizationId,
-        search: '',
-      })
       onChange({ value: null, label: '' })
     }
   }, [debouncedSearchTerm])
