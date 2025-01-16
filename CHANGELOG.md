@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.5.0] - 2025-01-16
+
 ### Changed
 - Changed cost center autocomplete to give suggestions based on the selected organizations
 
