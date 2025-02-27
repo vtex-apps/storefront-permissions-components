@@ -4,6 +4,7 @@ metadata:
   name: storefront-permissions-components
   annotations:
     github.com/project-slug: vtex-apps/storefront-permissions-components
+    vtex.com/application-id: DFYB8N6P
 spec:
   system: b2b-suite
   type: library
