@@ -18,5 +18,13 @@
     "react": "3.x",
     "messages": "1.x"
   },
+  "policies": [
+    {
+      "name": "buyer_organization_view"
+    },
+    {
+      "name": "buyer_organization_edit"
+    }
+  ],
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
 }
