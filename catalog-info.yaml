@@ -5,6 +5,8 @@ metadata:
   annotations:
     github.com/project-slug: vtex-apps/storefront-permissions-components
     vtex.com/application-id: DFYB8N6P
+    vtex.com/sdd-check-skip: 'true'
+    vtex.com/sdd-check-skip-reason: This repository is part of the B2B Suite package.
 spec:
   system: b2b-suite
   type: library
